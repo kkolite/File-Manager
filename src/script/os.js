@@ -5,6 +5,7 @@ const optionList = {
     username: '--username',
     homedir: '--homedir',
     EOL: '--EOL',
+    arch: '--architecture',
 }
 
 const getOsInfo = (option) => {
@@ -27,6 +28,11 @@ const getOsInfo = (option) => {
     if (option.match(optionList.EOL)) {
         const message = os.EOL;
         console.log(JSON.stringify(message))
+    }
+
+    if (option.match(optionList.arch)) {
+        const message = os.arch();
+        console.log(message)
     }
 }
 
