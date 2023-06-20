@@ -3,7 +3,7 @@ import { dirname } from 'path';
 import { showList } from './script/ls.js';
 import { changeDirectory, up } from './script/cd.js'
 import { getOsInfo } from './script/os.js'
-import { readFile, renameFile, createFile, removeFile } from './script/file.js';
+import { readFile, renameFile, createFile, removeFile, copyFiles } from './script/file.js';
 
 const {stdout, stdin, argv} = process;
 
@@ -19,6 +19,7 @@ const commandList = {
     rn: /rn.+/g,
     add: /add.+/g,
     rm: /rm.+/g,
+    cp: /cp.+/g,
 }
 
 const getDirectoryPath = () => {
@@ -48,6 +49,8 @@ const handleStdin = async (data) => {
     if (text.match(commandList.rm)) removeFile(text.trim().split(' ')[1]);
 
     if (text.match(commandList.rn)) renameFile(text.trim().split(' ')[1], text.trim().split(' ')[2]);
+
+    if (text.match(commandList.cp)) copyFiles(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
     stdout.write(`You are currently in ${getDirectoryPath()}\n`);
 }
