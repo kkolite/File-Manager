@@ -3,6 +3,7 @@ import { dirname } from 'path';
 import { showList } from './script/ls.js';
 import { changeDirectory, up } from './script/cd.js'
 import { getOsInfo } from './script/os.js'
+import { readFile } from './script/file.js';
 
 const {stdout, stdin, argv} = process;
 
@@ -14,6 +15,7 @@ const commandList = {
     ls: "ls",
     exit: ".exit",
     os: /os.+/g,
+    cat: /cat.+/g,
 }
 
 const getDirectoryPath = () => {
@@ -35,6 +37,8 @@ const handleStdin = async (data) => {
     if (text.match(commandList.up)) up();
 
     if (text.match(commandList.os)) getOsInfo(text.split(' ')[1]);
+
+    if (text.match(commandList.cat)) readFile(text.trim().split(' ')[1]);
 
     stdout.write(`You are currently in ${getDirectoryPath()}\n`);
 }
