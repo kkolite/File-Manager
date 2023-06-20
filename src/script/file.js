@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { createHash } from 'node:crypto';
 
 const { stdout } = process;
 
@@ -96,4 +97,28 @@ const copyFiles = (file, copySrc, isMove = false) => {
     }
 }
 
-export { readFile, renameFile, createFile, removeFile, copyFiles }
+const calculateHash = (file) => {
+    const directory = process.cwd();
+
+    const src = path.join(directory, file);
+
+    const createSHA = (data) => createHash('sha256').update(data).digest('hex');
+
+    const logSHA = (data) => {
+        const result = createSHA(data);
+        stdout.write(result);
+    }
+
+    try {
+        const stream = fs.createReadStream(src);
+
+        let data = '';
+
+        stream.on('data', chunk => data += chunk);
+        stream.on('end', () => logSHA(data));
+    } catch {
+        stdout.write('FS operation failed');
+    }
+};
+
+export { readFile, renameFile, createFile, removeFile, copyFiles, calculateHash }
