@@ -27,7 +27,19 @@ const renameFile = (file, name) => {
         if (err) stdout.write('FS operation failed');
         stdout.write('File Renamed!');
     });
-
 }
 
-export { readFile, renameFile }
+const createFile = (file) => {
+    const directory = process.cwd();
+    const src = path.join(directory, file);
+
+    fs.writeFile(src, '', function (err) {
+        if (err) {
+            stdout.write('FS operation failed');
+            return;
+        }
+        stdout.write('Create!');
+    });
+}
+
+export { readFile, renameFile, createFile }
