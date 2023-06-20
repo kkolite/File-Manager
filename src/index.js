@@ -18,7 +18,8 @@ const commandList = {
 
 const getDirectoryPath = () => {
     const __filename = fileURLToPath(import.meta.url);
-    return  dirname(__filename);
+    //return  dirname(__filename);
+    return  process.cwd()
 }
 
 const handleStdin = async (data) => {
@@ -29,13 +30,13 @@ const handleStdin = async (data) => {
 
     if (text.match(commandList.ls)) await showList(src);
 
-    if (text.match(commandList.cd)) changeDirectory(text.split(' ')[1]);
+    if (text.match(commandList.cd)) changeDirectory(text.trim().split(' ')[1]);
 
     if (text.match(commandList.up)) up();
 
     if (text.match(commandList.os)) getOsInfo(text.split(' ')[1]);
 
-    stdout.write(`You are currently in ${src}\n`);
+    stdout.write(`You are currently in ${getDirectoryPath()}\n`);
 }
 
 const handleExit = (username) => stdout.write(`Thank you for using File Manager, ${username}, goodbye!\n`);

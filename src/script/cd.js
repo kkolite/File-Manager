@@ -1,15 +1,15 @@
 const { stdout } = process;
 
-const changeDirectory = async (src) => {
-    /*try {
-       await process.chdir(src);
+const changeDirectory = (src) => {
+    try {
+        process.chdir(`${src}`);
     } catch(e) {
         stdout.write(`Error, no ${src}, ${e}`);
-    }*/
+    }
 }
 
 const up = () => {
-    //process.chdir('../');
+    process.chdir('../');
 }
 
 export { changeDirectory, up };
