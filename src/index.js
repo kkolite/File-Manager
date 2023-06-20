@@ -20,6 +20,7 @@ const commandList = {
     add: /add.+/g,
     rm: /rm.+/g,
     cp: /cp.+/g,
+    mv: /mv.+/g,
 }
 
 const getDirectoryPath = () => {
@@ -51,6 +52,8 @@ const handleStdin = async (data) => {
     if (text.match(commandList.rn)) renameFile(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
     if (text.match(commandList.cp)) copyFiles(text.trim().split(' ')[1], text.trim().split(' ')[2]);
+
+    if (text.match(commandList.mv)) copyFiles(text.trim().split(' ')[1], text.trim().split(' ')[2], true);
 
     stdout.write(`You are currently in ${getDirectoryPath()}\n`);
 }

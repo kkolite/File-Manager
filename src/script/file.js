@@ -55,11 +55,22 @@ const removeFile = (file) => {
     });
 }
 
-const copyFiles = (file, copySrc) => {
+const copyFiles = (file, copySrc, isMove = false) => {
     const directory = process.cwd();
     const src = path.join(directory, file);
 
-    const writeFile = (data, file, copySrc) => {
+    const removeOriginal = () => {
+        fs.unlink(src, function (err) {
+            if (err) {
+                stdout.write('FS operation failed');
+                return;
+            }
+        });
+    }
+
+    const writeFile = (data, file, copySrc, isMove) => {
+        if (isMove) removeOriginal();
+
         const directory = process.cwd();
 
         const src = path.join(directory, copySrc, file);
@@ -69,7 +80,7 @@ const copyFiles = (file, copySrc) => {
                 stdout.write('FS operation failed');
                 return;
             }
-            stdout.write('Copy!');
+            stdout.write(isMove ? 'Moved!' : 'Copied!');
         });
     }
 
@@ -79,7 +90,7 @@ const copyFiles = (file, copySrc) => {
         let data = '';
 
         stream.on('data', chunk => data += chunk);
-        stream.on('end', () => writeFile(data, file, copySrc));
+        stream.on('end', () => writeFile(data, file, copySrc, isMove));
     } catch {
         stdout.write('FS operation failed');
     }
