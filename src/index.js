@@ -58,9 +58,9 @@ const handleStdin = async (data) => {
 
     if (text.match(commandList.mv)) copyFiles(text.trim().split(' ')[1], text.trim().split(' ')[2], true);
 
-    if (text.match(commandList.compress)) compress(text.trim().split(' ')[1], text.trim().split(' ')[2]);
+    if (text.match(commandList.compress)) await compress(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
-    if (text.match(commandList.decompress)) decompress(text.trim().split(' ')[1], text.trim().split(' ')[2]);
+    if (text.match(commandList.decompress)) await decompress(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
     stdout.write(`You are currently in ${getDirectoryPath()}\n`);
 }

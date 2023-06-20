@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { createHash } from 'node:crypto';
 import zlib from 'zlib';
+import { pipeline } from 'stream/promises';
 
 const { stdout } = process;
 
@@ -122,7 +123,7 @@ const calculateHash = (file) => {
     }
 };
 
-const compress = (file, src) => {
+const compress = async (file, src) => {
     const directory = process.cwd();
 
     const srcToRead = path.join(directory, file);
@@ -132,10 +133,10 @@ const compress = (file, src) => {
 
     const read = fs.createReadStream(srcToRead);
     const write = fs.createWriteStream(srcToWrite);
-    read.pipe(gzip).pipe(write);
+    await pipeline(read, gzip, write);
 };
 
-const decompress = (file, src) => {
+const decompress = async (file, src) => {
     const directory = process.cwd();
 
     const srcToRead = path.join(directory, file);
@@ -145,7 +146,7 @@ const decompress = (file, src) => {
 
     const read = fs.createReadStream(srcToRead);
     const write = fs.createWriteStream(srcToWrite);
-    read.pipe(gzip).pipe(write);
+    await pipeline(read, gzip, write);
 };
 
 export { readFile, renameFile, createFile, removeFile, copyFiles, calculateHash, compress, decompress }
