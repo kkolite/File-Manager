@@ -42,4 +42,17 @@ const createFile = (file) => {
     });
 }
 
-export { readFile, renameFile, createFile }
+const removeFile = (file) => {
+    const directory = process.cwd();
+    const src = path.join(directory, file);
+
+    fs.unlink(src, function (err) {
+        if (err) {
+            stdout.write('FS operation failed');
+            return;
+        }
+        stdout.write('File deleted!');
+    });
+}
+
+export { readFile, renameFile, createFile, removeFile }

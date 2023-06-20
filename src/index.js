@@ -3,7 +3,7 @@ import { dirname } from 'path';
 import { showList } from './script/ls.js';
 import { changeDirectory, up } from './script/cd.js'
 import { getOsInfo } from './script/os.js'
-import { readFile, renameFile, createFile } from './script/file.js';
+import { readFile, renameFile, createFile, removeFile } from './script/file.js';
 
 const {stdout, stdin, argv} = process;
 
@@ -18,6 +18,7 @@ const commandList = {
     cat: /cat.+/g,
     rn: /rn.+/g,
     add: /add.+/g,
+    rm: /rm.+/g,
 }
 
 const getDirectoryPath = () => {
@@ -43,6 +44,8 @@ const handleStdin = async (data) => {
     if (text.match(commandList.cat)) readFile(text.trim().split(' ')[1]);
 
     if (text.match(commandList.add)) createFile(text.trim().split(' ')[1]);
+
+    if (text.match(commandList.rm)) removeFile(text.trim().split(' ')[1]);
 
     if (text.match(commandList.rn)) renameFile(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
