@@ -4,6 +4,7 @@ const optionList = {
     cpus: '--cpus',
     username: '--username',
     homedir: '--homedir',
+    EOL: '--EOL',
 }
 
 const getOsInfo = (option) => {
@@ -21,6 +22,11 @@ const getOsInfo = (option) => {
     if (option.match(optionList.homedir)) {
         const message = os.userInfo().homedir;
         console.log(message)
+    }
+
+    if (option.match(optionList.EOL)) {
+        const message = os.EOL;
+        console.log(JSON.stringify(message))
     }
 }
 
