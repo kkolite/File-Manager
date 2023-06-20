@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { showList } from './script/ls.js';
+import { changeDirectory, up } from './script/cd.js'
 
 const {stdout, stdin, argv} = process;
 
@@ -25,6 +26,10 @@ const handleStdin = async (data) => {
     if (text.match(commandList.exit)) process.exit();
 
     if (text.match(commandList.ls)) await showList(src);
+
+    if (text.match(commandList.cd)) changeDirectory(text.split(' ')[1]);
+
+    if (text.match(commandList.up)) up();
 
     stdout.write(`You are currently in ${src}\n`);
 }
