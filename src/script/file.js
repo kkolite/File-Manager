@@ -19,4 +19,15 @@ const readFile = (name) => {
     }
 }
 
-export { readFile }
+const renameFile = (file, name) => {
+    const directory = process.cwd();
+    const src = path.join(directory, file);
+
+    fs.rename(src, name, function (err) {
+        if (err) stdout.write('FS operation failed');
+        stdout.write('File Renamed!');
+    });
+
+}
+
+export { readFile, renameFile }
