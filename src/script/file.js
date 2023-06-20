@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { createHash } from 'node:crypto';
+import zlib from 'zlib';
 
 const { stdout } = process;
 
@@ -121,4 +122,30 @@ const calculateHash = (file) => {
     }
 };
 
-export { readFile, renameFile, createFile, removeFile, copyFiles, calculateHash }
+const compress = (file, src) => {
+    const directory = process.cwd();
+
+    const srcToRead = path.join(directory, file);
+    const srcToWrite = path.join(directory, src);
+
+    const gzip = zlib.createBrotliCompress();
+
+    const read = fs.createReadStream(srcToRead);
+    const write = fs.createWriteStream(srcToWrite);
+    read.pipe(gzip).pipe(write);
+};
+
+const decompress = (file, src) => {
+    const directory = process.cwd();
+
+    const srcToRead = path.join(directory, file);
+    const srcToWrite = path.join(directory, src);
+
+    const gzip = zlib.createBrotliDecompress();
+
+    const read = fs.createReadStream(srcToRead);
+    const write = fs.createWriteStream(srcToWrite);
+    read.pipe(gzip).pipe(write);
+};
+
+export { readFile, renameFile, createFile, removeFile, copyFiles, calculateHash, compress, decompress }

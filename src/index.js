@@ -3,7 +3,7 @@ import { dirname } from 'path';
 import { showList } from './script/ls.js';
 import { changeDirectory, up } from './script/cd.js'
 import { getOsInfo } from './script/os.js'
-import { readFile, renameFile, createFile, removeFile, copyFiles, calculateHash } from './script/file.js';
+import { readFile, renameFile, createFile, removeFile, copyFiles, calculateHash, compress, decompress } from './script/file.js';
 
 const {stdout, stdin, argv} = process;
 
@@ -22,12 +22,12 @@ const commandList = {
     cp: /cp.+/g,
     mv: /mv.+/g,
     hash: /hash.+/g,
+    compress: /compress.+/,
+    decompress: /decompress.+/,
 }
 
 const getDirectoryPath = () => {
-    const __filename = fileURLToPath(import.meta.url);
-    //return  dirname(__filename);
-    return  process.cwd()
+    return process.cwd();
 }
 
 const handleStdin = async (data) => {
@@ -57,6 +57,10 @@ const handleStdin = async (data) => {
     if (text.match(commandList.cp)) copyFiles(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
     if (text.match(commandList.mv)) copyFiles(text.trim().split(' ')[1], text.trim().split(' ')[2], true);
+
+    if (text.match(commandList.compress)) compress(text.trim().split(' ')[1], text.trim().split(' ')[2]);
+
+    if (text.match(commandList.decompress)) decompress(text.trim().split(' ')[1], text.trim().split(' ')[2]);
 
     stdout.write(`You are currently in ${getDirectoryPath()}\n`);
 }
