@@ -25,13 +25,9 @@ const commandList = {
     decompress: /decompress.+/,
 }
 
-const getDirectoryPath = () => {
-    return process.cwd();
-}
-
 const handleStdin = async (data) => {
     const text = data.toString();
-    const src = getDirectoryPath()
+    const src = process.cwd();
 
     if (text.match(commandList[".exit"])) process.exit();
 
@@ -63,7 +59,7 @@ const handleStdin = async (data) => {
 
     else stdout.write(`${MESSAGES.UNKNOWN}${[Object.keys(commandList).join(`\n`)]}\n`)
 
-    stdout.write(`You are currently in ${getDirectoryPath()}\n`);
+    stdout.write(`You are currently in ${process.cwd()}\n`);
 }
 
 const handleExit = (username) => stdout.write(`Thank you for using File Manager, ${username}, goodbye!\n`);
