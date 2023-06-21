@@ -1,4 +1,5 @@
 import os from 'os';
+import {MESSAGES} from "../messages.js";
 
 const { stdout } = process;
 
@@ -42,7 +43,7 @@ const getOsInfo = (option) => {
         return;
     }
 
-    const errorMessage = `Incorrect command.\nAvailable commands:\n${[Object.values(optionList).join(`\n`)]}\n`;
+    const errorMessage = `${MESSAGES.UNKNOWN}${[Object.values(optionList).join(`\n`)]}\n`;
     stdout.write(errorMessage);
 }
 

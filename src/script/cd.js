@@ -4,7 +4,7 @@ const changeDirectory = (src) => {
     try {
         process.chdir(`${src}`);
     } catch(e) {
-        stdout.write(`Error, no ${src}, ${e}`);
+        stdout.write(`${src}`);
     }
 }
 

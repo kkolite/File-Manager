@@ -3,6 +3,7 @@ import fs from 'fs';
 import { createHash } from 'node:crypto';
 import zlib from 'zlib';
 import { pipeline } from 'stream/promises';
+import {MESSAGES} from "../messages.js";
 
 const { stdout } = process;
 
@@ -18,7 +19,7 @@ const readFile = (name) => {
         stream.on('data', chunk => data += chunk);
         stream.on('end', () => stdout.write(data));
     } catch {
-        stdout.write('FS operation failed');
+        stdout.write(MESSAGES.ERROR);
     }
 }
 
@@ -27,8 +28,8 @@ const renameFile = (file, name) => {
     const src = path.join(directory, file);
 
     fs.rename(src, name, function (err) {
-        if (err) stdout.write('FS operation failed');
-        stdout.write('File Renamed!');
+        if (err) stdout.write(MESSAGES.ERROR);
+        stdout.write(MESSAGES.RENAME);
     });
 }
 
@@ -38,10 +39,10 @@ const createFile = (file) => {
 
     fs.writeFile(src, '', function (err) {
         if (err) {
-            stdout.write('FS operation failed');
+            stdout.write(MESSAGES.ERROR);
             return;
         }
-        stdout.write('Create!');
+        stdout.write(MESSAGES.CREATE);
     });
 }
 
@@ -51,10 +52,10 @@ const removeFile = (file) => {
 
     fs.unlink(src, function (err) {
         if (err) {
-            stdout.write('FS operation failed');
+            stdout.write(MESSAGES.ERROR);
             return;
         }
-        stdout.write('File deleted!');
+        stdout.write(MESSAGES.DELETE);
     });
 }
 
@@ -65,7 +66,7 @@ const copyFiles = (file, copySrc, isMove = false) => {
     const removeOriginal = () => {
         fs.unlink(src, function (err) {
             if (err) {
-                stdout.write('FS operation failed');
+                stdout.write(MESSAGES.ERROR);
                 return;
             }
         });
@@ -80,10 +81,10 @@ const copyFiles = (file, copySrc, isMove = false) => {
 
         fs.writeFile(src, '', function (err) {
             if (err) {
-                stdout.write('FS operation failed');
+                stdout.write(MESSAGES.ERROR);
                 return;
             }
-            stdout.write(isMove ? 'Moved!' : 'Copied!');
+            stdout.write(isMove ? MESSAGES.MOVED : MESSAGES.CREATE);
         });
     }
 
@@ -95,7 +96,7 @@ const copyFiles = (file, copySrc, isMove = false) => {
         stream.on('data', chunk => data += chunk);
         stream.on('end', () => writeFile(data, file, copySrc, isMove));
     } catch {
-        stdout.write('FS operation failed');
+        stdout.write(MESSAGES.ERROR);
     }
 }
 
@@ -119,7 +120,7 @@ const calculateHash = (file) => {
         stream.on('data', chunk => data += chunk);
         stream.on('end', () => logSHA(data));
     } catch {
-        stdout.write('FS operation failed');
+        stdout.write(MESSAGES.ERROR);
     }
 };
 
